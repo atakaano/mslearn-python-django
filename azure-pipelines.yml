@@ -54,12 +54,6 @@ stages:
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       displayName: 'Upload package'
       artifact: drop
-      
-    - task: PublishTestResults@2
-      inputs:        
-        searchFolder: $(System.DefaultWorkingDirectory)
-        testResultsFiles: '**/test-*.xml'
-      displayName: 'Publish test results'
     
     - script: 
         pip install setup
@@ -69,6 +63,12 @@ stages:
         pip install pycmd
         py.cleanup Tests/
       displayName: 'Run unit tests'
+
+    - task: PublishTestResults@2
+      inputs:        
+        searchFolder: $(System.DefaultWorkingDirectory)
+        testResultsFiles: '**/test-*.xml'
+      displayName: 'Publish test results'
 
     - publish: $(System.DefaultWorkingDirectory)/Tests
       artifact: tests
